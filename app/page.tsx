@@ -636,7 +636,7 @@ export default function Portfolio() {
         {showScrollTop && (
           <Button
             onClick={scrollToTop}
-            className="fixed bottom-8 right-8 rounded-full p-3 bg-blue-600 hover:bg-blue-700 shadow-lg z-40"
+            className="fixed bottom-8 left-8 rounded-full p-3 bg-blue-600 hover:bg-blue-700 shadow-lg z-40"
             size="icon"
           >
             <ChevronUp className="h-5 w-5" />
