@@ -54,7 +54,7 @@ export default function Portfolio() {
     // Add Tawk.to script
     const script = document.createElement("script")
     script.async = true
-    script.src = "https://embed.tawk.to/6765bd3caf5bfec1dbdf204d/default" // Replace with your actual Tawk.to site ID
+    script.src = "https://embed.tawk.to/fbdb6165762188444df44ef4ada974df42269edc/default" // Replace with your actual Tawk.to site ID
     script.charset = "UTF-8"
     script.setAttribute("crossorigin", "*")
 
