@@ -26,6 +26,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
+import ChatFallback from "@/components/chat-fallback"
 
 export default function Portfolio() {
   const [darkMode, setDarkMode] = useState(false)
@@ -47,26 +48,6 @@ export default function Portfolio() {
     }
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  // Tawk.to Live Chat Integration
-  useEffect(() => {
-    // Add Tawk.to script
-    const script = document.createElement("script")
-    script.async = true
-    script.src = "https://embed.tawk.to/fbdb6165762188444df44ef4ada974df42269edc/default" // Replace with your actual Tawk.to site ID
-    script.charset = "UTF-8"
-    script.setAttribute("crossorigin", "*")
-
-    // Append the script to the body
-    document.body.appendChild(script)
-
-    // Clean up function to remove the script when component unmounts
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script)
-      }
-    }
   }, [])
 
   const toggleDarkMode = () => {
@@ -661,6 +642,9 @@ export default function Portfolio() {
             <ChevronUp className="h-5 w-5" />
           </Button>
         )}
+
+        {/* Chat Fallback Component */}
+        <ChatFallback />
       </div>
     </div>
   )
