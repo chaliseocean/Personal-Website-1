@@ -58,10 +58,12 @@ export default function ChatFallback() {
 
             <div className="space-y-2 w-full">
               <Button
-                onClick={() => window.open("mailto:Chaliseocean756@gmail.com", "_blank")}
+                onClick={() =>
+                  window.open("https://mail.google.com/mail/?view=cm&to=Chaliseocean756@gmail.com", "_blank")
+                }
                 className="w-full bg-blue-600 hover:bg-blue-700"
               >
-                Send Email
+                Send Email via Gmail
               </Button>
               <Button
                 onClick={() => window.open("https://www.linkedin.com/in/ocean-chalise-045a1a303/", "_blank")}
