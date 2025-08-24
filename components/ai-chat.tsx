@@ -1,27 +1,44 @@
 "use client"
 import { useChat } from "ai/react"
-import { Send, Bot, User, X, Sparkles } from "lucide-react"
+import { Send, Bot, User, X, Sparkles, AlertTriangle, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useState } from "react"
 
 interface AIChatProps {
   onClose: () => void
 }
 
 export default function AIChat({ onClose }: AIChatProps) {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat()
+  const [warningMessages, setWarningMessages] = useState<string[]>([])
+
+  const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
+    onError: (error) => {
+      console.error("Chat error:", error)
+    },
+    onFinish: (message) => {
+      // Check if the response contains a warning
+      if (message.content.includes("⚠️") || message.content.includes("🤖")) {
+        setWarningMessages((prev) => [...prev, message.id])
+      }
+    },
+  })
 
   const suggestedQuestions = [
     "What are Ocean's main skills?",
-    "Tell me about his projects",
+    "Tell me about his Upwork experience",
     "What's his educational background?",
-    "Where does he work?",
+    "What data management services does he offer?",
     "How can I contact Ocean?",
     "What technologies does he use?",
   ]
 
   const handleSuggestedQuestion = (question: string) => {
     handleInputChange({ target: { value: question } } as any)
+  }
+
+  const isWarningMessage = (messageId: string) => {
+    return warningMessages.includes(messageId)
   }
 
   return (
@@ -49,9 +66,13 @@ export default function AIChat({ onClose }: AIChatProps) {
               <Sparkles className="h-6 w-6 absolute top-0 right-1/2 transform translate-x-8 text-yellow-500" />
             </div>
             <p className="text-sm mb-4">
-              Hi! I'm Ocean's AI assistant. I have access to all the information on his website and can answer detailed
-              questions about his background, projects, skills, and experience!
+              Hi! I'm Ocean's AI assistant. I can answer questions about his professional background, skills, projects,
+              and Upwork freelancing experience!
             </p>
+            <div className="text-xs bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 p-2 rounded-lg mb-4 border border-yellow-200 dark:border-yellow-800">
+              <Shield className="h-3 w-3 inline mr-1" />I maintain a professional environment and only discuss Ocean's
+              portfolio. Please keep conversations respectful and relevant.
+            </div>
 
             {/* Suggested Questions */}
             <div className="space-y-2">
@@ -71,21 +92,48 @@ export default function AIChat({ onClose }: AIChatProps) {
           </div>
         )}
 
+        {/* Error Message Display */}
+        {error && (
+          <div className="flex items-start space-x-2">
+            <div className="flex-shrink-0 w-8 h-8 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
+              <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
+            </div>
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3 rounded-lg rounded-bl-none max-w-[85%]">
+              <div className="text-sm text-red-700 dark:text-red-300">
+                {error.message ||
+                  "I'm sorry, but I can't respond to that. Please ask me about Ocean's professional background, skills, or projects."}
+              </div>
+            </div>
+          </div>
+        )}
+
         {messages.map((message) => (
           <div
             key={message.id}
             className={`flex items-start space-x-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
           >
             {message.role === "assistant" && (
-              <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 rounded-full flex items-center justify-center">
-                <Bot className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <div
+                className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                  isWarningMessage(message.id)
+                    ? "bg-red-100 dark:bg-red-900"
+                    : "bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900"
+                }`}
+              >
+                {isWarningMessage(message.id) ? (
+                  <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
+                ) : (
+                  <Bot className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                )}
               </div>
             )}
             <div
               className={`max-w-[85%] p-3 rounded-lg text-sm leading-relaxed ${
                 message.role === "user"
                   ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-br-none"
-                  : "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-none"
+                  : isWarningMessage(message.id)
+                    ? "bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 rounded-bl-none"
+                    : "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-none"
               }`}
             >
               <div className="whitespace-pre-wrap">{message.content}</div>
@@ -143,7 +191,7 @@ export default function AIChat({ onClose }: AIChatProps) {
           <Input
             value={input}
             onChange={handleInputChange}
-            placeholder="Ask me anything about Ocean..."
+            placeholder="Ask me about Ocean's professional background..."
             className="flex-1 bg-white dark:bg-gray-700"
             disabled={isLoading}
           />
@@ -156,6 +204,9 @@ export default function AIChat({ onClose }: AIChatProps) {
             <Send className="h-4 w-4" />
           </Button>
         </div>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          💡 Ask about Ocean's skills, projects, education, or Upwork experience
+        </p>
       </form>
     </div>
   )

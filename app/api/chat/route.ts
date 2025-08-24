@@ -15,11 +15,11 @@ Hello! I'm Ocean Chalise, a passionate tech enthusiast, aspiring full stack deve
 
 Over time, I've built projects like Arduino-based robot cars, wireless control systems, and simple web applications that blend functionality with design. I love working across the stack — whether it's crafting responsive front-ends using HTML, CSS, and JavaScript (or frameworks like React), or managing data with back-end tools like Node.js and databases. I'm also exploring UI/UX design principles to ensure that what I build is not just functional, but also user-friendly and visually appealing. I aim to keep growing, keep building, and contribute meaningfully to Nepal's tech community.
 
-Skills: HTML, CSS, JavaScript, React, Node.js, Arduino, UI/UX Design, MongoDB
+Skills: HTML, CSS, JavaScript, React, Node.js, Arduino, UI/UX Design, MongoDB, Data Management, Excel, Google Sheets
 
 === ACADEMIC QUALIFICATIONS ===
-1. Higher Education - Prerana College (2023 - 2025) - Ongoing
-   Currently pursuing higher education with focus on technology and development
+1. Higher Education - Prerana College (2023 - 2025) - GPA: 3.4/4.0
+   Completed higher education with strong academic performance in technology and development
 
 2. Secondary Level Education - Kalika Model Secondary School (2021 - 2023) - GPA: 3.65/4.0
    Completed secondary education with strong academic performance
@@ -53,14 +53,14 @@ Skills: HTML, CSS, JavaScript, React, Node.js, Arduino, UI/UX Design, MongoDB
    Technologies: Python, TensorFlow, Flask, React
 
 === WORK EXPERIENCE ===
-Senior Full Stack Developer at Astranix (2025 - Present)
+Freelancer - Data Specialist at Upwork (2023 - Present)
 Location: Chaubiskoti Bharatpur
-- Lead development of scalable web applications serving 100K+ users
-- Mentor junior developers and architect cloud-native solutions
+- Specialized in data entry, data management, and data manipulation projects for various clients
+- Delivered accurate and efficient data solutions across multiple industries
 Key Achievements:
-- Reduced application load time by 40%
-- Led team of 5 developers
-- Implemented CI/CD pipeline
+- Completed 50+ data projects with 100% accuracy
+- Maintained 5-star rating on Upwork platform
+- Specialized in Excel, Google Sheets, and database management
 
 === CONTACT INFORMATION ===
 Email: Chaliseocean756@gmail.com
@@ -74,10 +74,240 @@ YouTube: https://www.youtube.com/@40A_ocean
 - Wireless control systems
 - Web applications that blend functionality with design
 - Electronics projects that started his tech journey
+- Data management and manipulation projects on Upwork
 `
+
+// Content moderation - inappropriate words and phrases to filter
+const inappropriateContent = [
+  // Vulgar words
+  "fuck",
+  "fucking",
+  "fucked",
+  "fucker",
+  "fck",
+  "f*ck",
+  "shit",
+  "shit",
+  "bullshit",
+  "bs",
+  "s**t",
+  "damn",
+  "damned",
+  "dammit",
+  "bitch",
+  "bitches",
+  "b*tch",
+  "ass",
+  "asshole",
+  "a**",
+  "arse",
+  "hell",
+  "wtf",
+  "stfu",
+  "crap",
+  "crappy",
+  "piss",
+  "pissed",
+  "pissing",
+  // Inappropriate topics
+  "sex",
+  "sexual",
+  "sexy",
+  "porn",
+  "pornography",
+  "xxx",
+  "nude",
+  "naked",
+  "strip",
+  "boobs",
+  "penis",
+  "vagina",
+  "drugs",
+  "cocaine",
+  "marijuana",
+  "weed",
+  "cannabis",
+  "heroin",
+  "kill",
+  "murder",
+  "suicide",
+  "die",
+  "death",
+  "dead",
+  // Offensive terms
+  "stupid",
+  "idiot",
+  "moron",
+  "retard",
+  "retarded",
+  "dumb",
+  "dumbass",
+  "gay",
+  "lesbian",
+  "homo",
+  "fag",
+  "faggot",
+  "nigger",
+  "nigga",
+  "racist",
+  "nazi",
+  // Spam/irrelevant
+  "buy now",
+  "click here",
+  "free money",
+  "get rich",
+  "lose weight",
+  "viagra",
+  "casino",
+  "gambling",
+  "lottery",
+  // Personal attacks
+  "ugly",
+  "fat",
+  "loser",
+  "pathetic",
+  "worthless",
+  "hate you",
+]
+
+// Function to check if message contains inappropriate content
+function containsInappropriateContent(message: string): boolean {
+  const lowerMessage = message.toLowerCase()
+  return inappropriateContent.some((word) => lowerMessage.includes(word))
+}
+
+// Function to check if message is relevant to Ocean's portfolio
+function isRelevantTopic(message: string): boolean {
+  const lowerMessage = message.toLowerCase()
+  const relevantKeywords = [
+    "ocean",
+    "chalise",
+    "portfolio",
+    "developer",
+    "programming",
+    "coding",
+    "web",
+    "design",
+    "project",
+    "skill",
+    "education",
+    "work",
+    "experience",
+    "contact",
+    "hire",
+    "freelance",
+    "upwork",
+    "data",
+    "javascript",
+    "react",
+    "node",
+    "html",
+    "css",
+    "arduino",
+    "nepal",
+    "college",
+    "school",
+    "gpa",
+    "github",
+    "linkedin",
+    "youtube",
+    "email",
+    "phone",
+    "technology",
+    "tech",
+    "software",
+    "application",
+    "website",
+    "database",
+    "excel",
+    "google sheets",
+    "management",
+    "manipulation",
+    "entry",
+    "hello",
+    "hi",
+    "help",
+    "about",
+    "tell me",
+    "what",
+    "how",
+    "when",
+    "where",
+    "why",
+    "can you",
+    "do you",
+  ]
+
+  // If message is very short (like greetings), consider it relevant
+  if (lowerMessage.length < 20) return true
+
+  // Check if message contains any relevant keywords
+  return relevantKeywords.some((keyword) => lowerMessage.includes(keyword))
+}
+
+// Warning messages for different types of inappropriate content
+const getWarningMessage = (message: string): string => {
+  const lowerMessage = message.toLowerCase()
+
+  if (lowerMessage.includes("sex") || lowerMessage.includes("porn") || lowerMessage.includes("nude")) {
+    return "⚠️ **Content Warning**: I cannot discuss adult or sexual content. I'm here to help you learn about Ocean Chalise's professional portfolio, skills, and work experience. Please keep our conversation professional and appropriate."
+  }
+
+  if (lowerMessage.includes("fuck") || lowerMessage.includes("shit") || lowerMessage.includes("damn")) {
+    return "⚠️ **Language Warning**: Please use respectful language in our conversation. I'm Ocean's professional assistant and I maintain a professional environment. Let's focus on discussing Ocean's skills, projects, or how to contact him for work opportunities."
+  }
+
+  if (lowerMessage.includes("stupid") || lowerMessage.includes("idiot") || lowerMessage.includes("moron")) {
+    return "⚠️ **Respectful Communication**: I encourage respectful and constructive conversation. I'm here to provide helpful information about Ocean Chalise's professional background. How can I assist you with learning about his work or skills?"
+  }
+
+  if (lowerMessage.includes("drugs") || lowerMessage.includes("kill") || lowerMessage.includes("die")) {
+    return "⚠️ **Inappropriate Content**: I cannot engage with harmful or illegal content discussions. I'm designed to help visitors learn about Ocean's professional portfolio. Please ask me about his projects, education, or work experience instead."
+  }
+
+  // Generic warning for other inappropriate content
+  return "⚠️ **Content Moderation**: I'm sorry, but I can't respond to inappropriate content. I'm Ocean's professional portfolio assistant, designed to help visitors learn about his skills, projects, education, and work experience. Please keep our conversation professional and relevant to his portfolio."
+}
 
 export async function POST(req: Request) {
   const { messages } = await req.json()
+
+  // Get the latest user message
+  const latestMessage = messages[messages.length - 1]
+
+  // Content moderation
+  if (latestMessage.role === "user") {
+    if (containsInappropriateContent(latestMessage.content)) {
+      const warningMessage = getWarningMessage(latestMessage.content)
+
+      return new Response(
+        JSON.stringify({
+          role: "assistant",
+          content: warningMessage,
+          warning: true,
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        },
+      )
+    }
+
+    if (!isRelevantTopic(latestMessage.content)) {
+      return new Response(
+        JSON.stringify({
+          role: "assistant",
+          content:
+            "🤖 **Off-Topic Notice**: I'm Ocean's portfolio assistant, so I focus on topics related to his professional background. Please ask me about Ocean's work experience, education, projects, skills, or how to contact him for professional opportunities!",
+          warning: true,
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        },
+      )
+    }
+  }
 
   const result = await streamText({
     model: openai("gpt-4o"),
@@ -87,19 +317,32 @@ IMPORTANT: You have access to the complete website content below. Use this infor
 
 ${websiteContent}
 
+CONTENT MODERATION RULES:
+- NEVER respond to inappropriate, vulgar, or offensive content
+- ONLY discuss topics related to Ocean Chalise's professional portfolio
+- If someone asks about unrelated topics, politely redirect them to Ocean's professional information
+- Maintain a professional, respectful, and helpful tone at all times
+- Do not engage with spam, promotional content, or irrelevant queries
+
 INSTRUCTIONS:
 - Answer questions based on the actual website content provided above
 - Be conversational, friendly, and professional
 - Provide specific details from the website when relevant
 - If asked about projects, mention the technologies used and descriptions provided
-- If asked about education, provide the specific schools, years, and GPAs mentioned
-- If asked about work experience, include the company, role, achievements, and location
+- If asked about education, provide the specific schools, years, and GPAs mentioned (Higher Education: 3.4/4.0, Secondary: 3.65/4.0, Basic: 4.0/4.0)
+- If asked about work experience, include his freelance work at Upwork specializing in data entry, data management, and data manipulation
 - If someone wants to contact Ocean, provide the specific contact information listed
-- If asked about skills, mention the exact technologies listed on the website
+- If asked about skills, mention his technical skills including data management, Excel, Google Sheets
 - You can elaborate on the information provided but stay true to the facts on the website
 - If asked about something not covered on the website, politely say you don't have that specific information but offer related information that is available
 
-Keep responses helpful, informative, and engaging. You represent Ocean professionally, so maintain a positive and knowledgeable tone.`,
+SPECIAL FOCUS AREAS:
+- Ocean's freelance work on Upwork as a Data Specialist
+- His academic achievements including his 3.4 GPA in Higher Education
+- His technical skills in web development and data management
+- His projects ranging from web applications to Arduino-based systems
+
+Keep responses helpful, informative, and engaging. You represent Ocean professionally, so maintain a positive and knowledgeable tone. Always stay on topic about Ocean's professional portfolio.`,
     messages,
   })
 

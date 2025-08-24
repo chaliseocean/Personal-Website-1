@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react"
 import type React from "react"
 
-import { Send, Bot, User, X, Sparkles, RotateCcw, ChevronLeft, ChevronRight } from "lucide-react"
+import { Send, Bot, User, X, Sparkles, RotateCcw, ChevronLeft, ChevronRight, AlertTriangle, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
@@ -14,31 +14,113 @@ interface Message {
   id: string
   role: "user" | "assistant"
   content: string
+  isWarning?: boolean
+}
+
+// Content moderation - inappropriate words and phrases to filter
+const inappropriateContent = [
+  "fuck",
+  "fucking",
+  "fucked",
+  "fucker",
+  "fck",
+  "f*ck",
+  "shit",
+  "shit",
+  "bullshit",
+  "bs",
+  "s**t",
+  "damn",
+  "damned",
+  "dammit",
+  "bitch",
+  "bitches",
+  "b*tch",
+  "ass",
+  "asshole",
+  "a**",
+  "arse",
+  "sex",
+  "sexual",
+  "sexy",
+  "porn",
+  "pornography",
+  "xxx",
+  "nude",
+  "naked",
+  "strip",
+  "drugs",
+  "cocaine",
+  "marijuana",
+  "weed",
+  "stupid",
+  "idiot",
+  "moron",
+  "retard",
+  "gay",
+  "lesbian",
+  "homo",
+  "kill",
+  "murder",
+  "suicide",
+  "die",
+  "death",
+  "dead",
+]
+
+// Function to check if message contains inappropriate content
+function containsInappropriateContent(message: string): boolean {
+  const lowerMessage = message.toLowerCase()
+  return inappropriateContent.some((word) => lowerMessage.includes(word))
+}
+
+// Warning messages for different types of inappropriate content
+const getWarningMessage = (message: string): string => {
+  const lowerMessage = message.toLowerCase()
+
+  if (lowerMessage.includes("sex") || lowerMessage.includes("porn") || lowerMessage.includes("nude")) {
+    return "⚠️ **Content Warning**: I cannot discuss adult or sexual content. I'm here to help you learn about Ocean Chalise's professional portfolio, skills, and work experience. Please keep our conversation professional and appropriate."
+  }
+
+  if (lowerMessage.includes("fuck") || lowerMessage.includes("shit") || lowerMessage.includes("damn")) {
+    return "⚠️ **Language Warning**: Please use respectful language in our conversation. I'm Ocean's professional assistant and I maintain a professional environment. Let's focus on discussing Ocean's skills, projects, or how to contact him for work opportunities."
+  }
+
+  if (lowerMessage.includes("stupid") || lowerMessage.includes("idiot") || lowerMessage.includes("moron")) {
+    return "⚠️ **Respectful Communication**: I encourage respectful and constructive conversation. I'm here to provide helpful information about Ocean Chalise's professional background. How can I assist you with learning about his work or skills?"
+  }
+
+  if (lowerMessage.includes("drugs") || lowerMessage.includes("kill") || lowerMessage.includes("die")) {
+    return "⚠️ **Inappropriate Content**: I cannot engage with harmful or illegal content discussions. I'm designed to help visitors learn about Ocean's professional portfolio. Please ask me about his projects, education, or work experience instead."
+  }
+
+  // Generic warning for other inappropriate content
+  return "⚠️ **Content Moderation**: I'm sorry, but I can't respond to inappropriate content. I'm Ocean's professional portfolio assistant, designed to help visitors learn about his skills, projects, education, and work experience. Please keep our conversation professional and relevant to his portfolio."
 }
 
 // Pre-made Q&A for instant responses
 const quickAnswers: { [key: string]: string } = {
   skills:
-    "Ocean's main skills include:\n\n🚀 **Frontend:** HTML, CSS, JavaScript, React\n💻 **Backend:** Node.js, MongoDB\n🎨 **Design:** UI/UX Design\n🔧 **Hardware:** Arduino, Electronics\n⚡ **Other:** Full Stack Development, Database Management",
+    "Ocean's main skills include:\n\n🚀 **Frontend:** HTML, CSS, JavaScript, React, Next.js\n💻 **Backend:** Node.js, MongoDB\n📊 **Data Management:** Excel, Google Sheets, Data Entry, Data Manipulation\n🎨 **Design:** UI/UX Design\n🔧 **Hardware:** Arduino, Electronics\n⚡ **Other:** Full Stack Development, Database Management, Freelancing",
 
   projects:
-    "Ocean has worked on several exciting projects:\n\n🛒 **E-Commerce Platform** - React, Node.js, MongoDB, Stripe\n📋 **Task Management App** - Next.js, Socket.io, PostgreSQL\n🌤️ **Weather Dashboard** - React, OpenWeather API, Chart.js\n📊 **Social Media Analytics** - Vue.js, Python, FastAPI\n🤖 **AI Chat Assistant** - Python, TensorFlow, Flask\n🚗 **Arduino Robot Cars** - Arduino, Wireless Control Systems",
+    "Ocean has worked on several exciting projects:\n\n🛒 **E-Commerce Platform** - React, Node.js, MongoDB, Stripe\n📋 **Task Management App** - Next.js, Socket.io, PostgreSQL\n🌤️ **Weather Dashboard** - React, OpenWeather API, Chart.js\n📊 **Social Media Analytics** - Vue.js, Python, FastAPI\n🤖 **AI Chat Assistant** - Python, TensorFlow, Flask\n🚗 **Arduino Robot Cars** - Arduino, Wireless Control Systems\n📈 **Data Management Projects** - Excel, Google Sheets, Database Management",
 
   education:
-    "Ocean's educational background:\n\n🎓 **Higher Education** (2023-2025)\n📍 Prerana College - Currently pursuing\n\n🎓 **Secondary Level** (2021-2023)\n📍 Kalika Model Secondary School - GPA: 3.65/4.0\n\n🎓 **Basic Level** (2015-2020)\n📍 Kalika Model Secondary School - GPA: 4.0/4.0",
+    "Ocean's educational background:\n\n🎓 **Higher Education** (2023-2025)\n📍 Prerana College - GPA: 3.4/4.0 ✅\n\n🎓 **Secondary Level** (2021-2023)\n📍 Kalika Model Secondary School - GPA: 3.65/4.0\n\n🎓 **Basic Level** (2015-2020)\n📍 Kalika Model Secondary School - GPA: 4.0/4.0",
 
-  work: "Ocean's work experience:\n\n💼 **Senior Full Stack Developer** at Astranix\n📅 2025 - Present\n📍 Chaubiskoti Bharatpur\n\n✨ **Key Achievements:**\n• Reduced app load time by 40%\n• Led team of 5 developers\n• Implemented CI/CD pipeline\n• Serves 100K+ users",
+  work: "Ocean's work experience:\n\n💼 **Freelancer - Data Specialist** at Upwork\n📅 2023 - Present\n📍 Chaubiskoti Bharatpur\n\n✨ **Specializations:**\n• Data Entry & Management\n• Data Manipulation & Analysis\n• Excel & Google Sheets Expert\n• Database Management\n\n🏆 **Achievements:**\n• 50+ completed projects with 100% accuracy\n• 5-star rating on Upwork platform\n• Trusted by clients across multiple industries",
 
   contact:
-    "Here's how you can reach Ocean:\n\n📧 **Email:** Chaliseocean756@gmail.com\n📱 **Phone:** +977 9748202958\n💼 **LinkedIn:** linkedin.com/in/ocean-chalise-045a1a303/\n💻 **GitHub:** github.com/chaliseocean\n📺 **YouTube:** youtube.com/@40A_ocean",
+    "Here's how you can reach Ocean:\n\n📧 **Email:** Chaliseocean756@gmail.com\n📱 **Phone:** +977 9748202958\n💼 **LinkedIn:** linkedin.com/in/ocean-chalise-045a1a303/\n💻 **GitHub:** github.com/chaliseocean\n📺 **YouTube:** youtube.com/@40A_ocean\n💰 **Upwork:** Available for data management projects",
 
   about:
-    "Ocean Chalise is a passionate tech enthusiast from Nepal! 🇳🇵\n\n👨‍💻 **Role:** Full Stack Developer & UI/UX Designer\n🎯 **Passion:** Creating beautiful, functional web experiences\n🚀 **Journey:** Started with Arduino projects, now building scalable web applications\n💡 **Goal:** Contributing meaningfully to Nepal's tech community\n\n🔥 He loves working across the full stack - from designing intuitive UIs to building robust backend systems!",
+    "Ocean Chalise is a passionate tech enthusiast from Nepal! 🇳🇵\n\n👨‍💻 **Role:** Full Stack Developer & UI/UX Designer\n📊 **Specialty:** Data Management & Manipulation Expert\n🎯 **Passion:** Creating beautiful, functional web experiences\n🚀 **Journey:** Started with Arduino projects, now building scalable web applications and managing data for clients\n💡 **Goal:** Contributing meaningfully to Nepal's tech community\n\n🔥 He loves working across the full stack and has proven expertise in data management through his successful Upwork freelancing career!",
 
   technologies:
-    "Ocean works with modern technologies:\n\n**Frontend:**\n• HTML5, CSS3, JavaScript (ES6+)\n• React.js, Next.js\n• Tailwind CSS, Responsive Design\n\n**Backend:**\n• Node.js, Express.js\n• MongoDB, PostgreSQL\n• RESTful APIs\n\n**Tools & Others:**\n• Git, GitHub\n• Arduino Programming\n• UI/UX Design Principles\n• Full Stack Architecture",
+    "Ocean works with modern technologies:\n\n**Frontend:**\n• HTML5, CSS3, JavaScript (ES6+)\n• React.js, Next.js\n• Tailwind CSS, Responsive Design\n\n**Backend:**\n• Node.js, Express.js\n• MongoDB, PostgreSQL\n• RESTful APIs\n\n**Data Management:**\n• Microsoft Excel (Advanced)\n• Google Sheets & Google Workspace\n• Data Entry & Manipulation\n• Database Management\n\n**Tools & Others:**\n• Git, GitHub\n• Arduino Programming\n• UI/UX Design Principles\n• Upwork Freelancing Platform",
 
-  hire: "Interested in working with Ocean? 🤝\n\n💼 **Available for:**\n• Full Stack Development Projects\n• UI/UX Design Consultation\n• Arduino/IoT Projects\n• Web Application Development\n\n📞 **Get in touch:**\n• Email: Chaliseocean756@gmail.com\n• LinkedIn: Professional inquiries welcome\n• Phone: +977 9748202958\n\n⚡ Ocean is passionate about creating innovative solutions and would love to discuss your project!",
+  hire: "Interested in working with Ocean? 🤝\n\n💼 **Available for:**\n• Full Stack Development Projects\n• Data Entry & Management Services\n• Data Manipulation & Analysis\n• Excel & Google Sheets Automation\n• UI/UX Design Consultation\n• Arduino/IoT Projects\n• Web Application Development\n\n📞 **Get in touch:**\n• Email: Chaliseocean756@gmail.com\n• LinkedIn: Professional inquiries welcome\n• Phone: +977 9748202958\n• Upwork: For data management projects\n\n⚡ Ocean has a proven track record with 50+ successful projects and 5-star ratings. He's passionate about delivering accurate, efficient solutions!",
 }
 
 const quickQuestions = [
@@ -105,7 +187,7 @@ export default function QuickChat({ onClose }: QuickChatProps) {
       lowerQuestion.includes("job") ||
       lowerQuestion.includes("experience") ||
       lowerQuestion.includes("company") ||
-      lowerQuestion.includes("astranix")
+      lowerQuestion.includes("upwork")
     ) {
       return quickAnswers.work
     }
@@ -175,7 +257,27 @@ export default function QuickChat({ onClose }: QuickChatProps) {
 
     setMessages((prev) => [...prev, userMessage])
 
-    // Try to find a quick answer
+    // Check for inappropriate content first
+    if (containsInappropriateContent(input)) {
+      const warningMessage = getWarningMessage(input)
+
+      setIsTyping(true)
+      setTimeout(() => {
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: warningMessage,
+          isWarning: true,
+        }
+        setMessages((prev) => [...prev, assistantMessage])
+        setIsTyping(false)
+      }, 600)
+
+      setInput("")
+      return
+    }
+
+    // Try to find a quick answer for appropriate content
     const quickAnswer = findBestAnswer(input)
 
     setIsTyping(true)
@@ -244,7 +346,12 @@ export default function QuickChat({ onClose }: QuickChatProps) {
               <Sparkles className="h-4 w-4 absolute top-0 right-1/2 transform translate-x-6 text-yellow-500 animate-pulse" />
             </div>
             <p className="text-sm mb-1 font-medium">Hi! I'm Ocean's AI assistant! ⚡</p>
-            <p className="text-xs text-gray-400">Use quick questions below!</p>
+            <p className="text-xs text-gray-400 mb-3">Use quick questions below!</p>
+
+            <div className="text-xs bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 p-2 rounded-lg border border-yellow-200 dark:border-yellow-800">
+              <Shield className="h-3 w-3 inline mr-1" />
+              Professional conversations only. Inappropriate content will be warned.
+            </div>
           </div>
         )}
 
@@ -254,15 +361,27 @@ export default function QuickChat({ onClose }: QuickChatProps) {
             className={`flex items-start space-x-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
           >
             {message.role === "assistant" && (
-              <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 rounded-full flex items-center justify-center">
-                <Bot className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+              <div
+                className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center ${
+                  message.isWarning
+                    ? "bg-red-100 dark:bg-red-900"
+                    : "bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900"
+                }`}
+              >
+                {message.isWarning ? (
+                  <AlertTriangle className="h-3 w-3 text-red-600 dark:text-red-400" />
+                ) : (
+                  <Bot className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+                )}
               </div>
             )}
             <div
               className={`max-w-[85%] p-2 rounded-lg text-xs leading-relaxed ${
                 message.role === "user"
                   ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-br-none"
-                  : "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-none"
+                  : message.isWarning
+                    ? "bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 rounded-bl-none"
+                    : "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-none"
               }`}
             >
               <div className="whitespace-pre-wrap">{message.content}</div>
@@ -337,7 +456,7 @@ export default function QuickChat({ onClose }: QuickChatProps) {
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask me anything about Ocean..."
+            placeholder="Ask me about Ocean's professional background..."
             className="flex-1 bg-white dark:bg-gray-700 text-xs h-8"
             disabled={isTyping}
           />
@@ -350,6 +469,9 @@ export default function QuickChat({ onClose }: QuickChatProps) {
             <Send className="h-3 w-3" />
           </Button>
         </div>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          ⚠️ Keep conversations professional and respectful
+        </p>
       </form>
 
       {/* Custom scrollbar styles */}

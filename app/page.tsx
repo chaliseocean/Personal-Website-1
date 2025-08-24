@@ -64,458 +64,16 @@ export default function Portfolio() {
     element?.scrollIntoView({ behavior: "smooth" })
   }
 
-  // CV Download Function - PDF Style with Photo
+  // CV Download Function - Use updated PDF file
   const downloadCV = () => {
-    // Create a new window with a professional CV layout
-    const cvWindow = window.open("", "_blank", "width=800,height=1000")
-
-    const cvHTML = `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Ocean Chalise - CV</title>
-          <style>
-              * {
-                  margin: 0;
-                  padding: 0;
-                  box-sizing: border-box;
-              }
-              
-              body {
-                  font-family: 'Arial', sans-serif;
-                  line-height: 1.6;
-                  color: #333;
-                  background: white;
-                  padding: 40px;
-                  max-width: 800px;
-                  margin: 0 auto;
-              }
-              
-              .cv-header {
-                  text-align: center;
-                  margin-bottom: 30px;
-                  padding-bottom: 20px;
-                  border-bottom: 3px solid #2563eb;
-              }
-              
-              .profile-photo {
-                  width: 120px;
-                  height: 120px;
-                  border-radius: 50%;
-                  margin: 0 auto 20px;
-                  border: 4px solid #2563eb;
-                  object-fit: cover;
-                  display: block;
-              }
-              
-              .name {
-                  font-size: 2.5em;
-                  font-weight: bold;
-                  color: #2563eb;
-                  margin-bottom: 10px;
-              }
-              
-              .title {
-                  font-size: 1.3em;
-                  color: #6b7280;
-                  margin-bottom: 15px;
-              }
-              
-              .contact-info {
-                  display: flex;
-                  justify-content: center;
-                  flex-wrap: wrap;
-                  gap: 20px;
-                  font-size: 0.9em;
-                  color: #4b5563;
-              }
-              
-              .section {
-                  margin-bottom: 25px;
-              }
-              
-              .section-title {
-                  font-size: 1.4em;
-                  font-weight: bold;
-                  color: #2563eb;
-                  margin-bottom: 15px;
-                  padding-bottom: 5px;
-                  border-bottom: 2px solid #e5e7eb;
-              }
-              
-              .about-text {
-                  text-align: justify;
-                  margin-bottom: 15px;
-                  color: #4b5563;
-              }
-              
-              .skills-grid {
-                  display: grid;
-                  grid-template-columns: repeat(2, 1fr);
-                  gap: 15px;
-                  margin-bottom: 15px;
-              }
-              
-              .skill-category {
-                  background: #f8fafc;
-                  padding: 15px;
-                  border-radius: 8px;
-                  border-left: 4px solid #2563eb;
-              }
-              
-              .skill-category h4 {
-                  color: #2563eb;
-                  margin-bottom: 8px;
-                  font-weight: bold;
-              }
-              
-              .skill-category ul {
-                  list-style: none;
-                  padding-left: 0;
-              }
-              
-              .skill-category li {
-                  color: #4b5563;
-                  margin-bottom: 4px;
-                  padding-left: 15px;
-                  position: relative;
-              }
-              
-              .skill-category li:before {
-                  content: "•";
-                  color: #2563eb;
-                  position: absolute;
-                  left: 0;
-              }
-              
-              .experience-item, .education-item, .project-item {
-                  margin-bottom: 20px;
-                  padding: 15px;
-                  background: #f8fafc;
-                  border-radius: 8px;
-                  border-left: 4px solid #2563eb;
-              }
-              
-              .item-header {
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: flex-start;
-                  margin-bottom: 10px;
-              }
-              
-              .item-title {
-                  font-weight: bold;
-                  color: #1f2937;
-                  font-size: 1.1em;
-              }
-              
-              .item-company {
-                  color: #2563eb;
-                  font-weight: 600;
-              }
-              
-              .item-date {
-                  color: #6b7280;
-                  font-size: 0.9em;
-              }
-              
-              .item-location {
-                  color: #6b7280;
-                  font-size: 0.9em;
-                  font-style: italic;
-              }
-              
-              .item-description {
-                  color: #4b5563;
-                  margin-bottom: 10px;
-              }
-              
-              .achievements {
-                  margin-top: 10px;
-              }
-              
-              .achievements h5 {
-                  color: #2563eb;
-                  margin-bottom: 5px;
-              }
-              
-              .achievements ul {
-                  list-style: none;
-                  padding-left: 0;
-              }
-              
-              .achievements li {
-                  color: #4b5563;
-                  margin-bottom: 3px;
-                  padding-left: 15px;
-                  position: relative;
-              }
-              
-              .achievements li:before {
-                  content: "✓";
-                  color: #10b981;
-                  position: absolute;
-                  left: 0;
-                  font-weight: bold;
-              }
-              
-              .project-tech {
-                  margin-top: 8px;
-              }
-              
-              .tech-tag {
-                  display: inline-block;
-                  background: #dbeafe;
-                  color: #2563eb;
-                  padding: 3px 8px;
-                  border-radius: 12px;
-                  font-size: 0.8em;
-                  margin-right: 5px;
-                  margin-bottom: 5px;
-              }
-              
-              .print-button {
-                  position: fixed;
-                  top: 20px;
-                  right: 20px;
-                  background: #2563eb;
-                  color: white;
-                  border: none;
-                  padding: 10px 20px;
-                  border-radius: 5px;
-                  cursor: pointer;
-                  font-size: 14px;
-                  z-index: 1000;
-              }
-              
-              .print-button:hover {
-                  background: #1d4ed8;
-              }
-              
-              @media print {
-                  body {
-                      padding: 20px;
-                  }
-                  .print-button {
-                      display: none;
-                  }
-              }
-              
-              @page {
-                  margin: 1in;
-              }
-          </style>
-      </head>
-      <body>
-          <button class="print-button" onclick="window.print()">📄 Save as PDF</button>
-          
-          <div class="cv-header">
-              <img src="/images/ocean-profile.jpg" alt="Ocean Chalise" class="profile-photo" />
-              <h1 class="name">OCEAN CHALISE</h1>
-              <p class="title">Full Stack Developer & UI/UX Designer</p>
-              <div class="contact-info">
-                  <span>📧 Chaliseocean756@gmail.com</span>
-                  <span>📱 +977 9748202958</span>
-                  <span>💼 linkedin.com/in/ocean-chalise-045a1a303/</span>
-                  <span>💻 github.com/chaliseocean</span>
-              </div>
-          </div>
-
-          <div class="section">
-              <h2 class="section-title">ABOUT ME</h2>
-              <p class="about-text">
-                  Passionate tech enthusiast from Nepal, aspiring full stack developer and beginner UI/UX designer. 
-                  I enjoy creating complete digital experiences from designing intuitive user interfaces to building 
-                  robust back-end systems. My journey in tech began with curiosity and small electronics projects, 
-                  and it has grown into a deep passion for coding, designing, and solving real-world problems through technology.
-              </p>
-              <p class="about-text">
-                  Over time, I've built projects like Arduino-based robot cars, wireless control systems, and web 
-                  applications that blend functionality with design. I aim to keep growing, keep building, and 
-                  contribute meaningfully to Nepal's tech community.
-              </p>
-          </div>
-
-          <div class="section">
-              <h2 class="section-title">TECHNICAL SKILLS</h2>
-              <div class="skills-grid">
-                  <div class="skill-category">
-                      <h4>Frontend Development</h4>
-                      <ul>
-                          <li>HTML5, CSS3, JavaScript (ES6+)</li>
-                          <li>React.js, Next.js</li>
-                          <li>Tailwind CSS</li>
-                          <li>Responsive Design</li>
-                      </ul>
-                  </div>
-                  <div class="skill-category">
-                      <h4>Backend Development</h4>
-                      <ul>
-                          <li>Node.js, Express.js</li>
-                          <li>MongoDB, PostgreSQL</li>
-                          <li>RESTful APIs</li>
-                          <li>Database Management</li>
-                      </ul>
-                  </div>
-                  <div class="skill-category">
-                      <h4>Design & Hardware</h4>
-                      <ul>
-                          <li>UI/UX Design Principles</li>
-                          <li>Arduino Programming</li>
-                          <li>Electronics Projects</li>
-                          <li>Prototyping</li>
-                      </ul>
-                  </div>
-                  <div class="skill-category">
-                      <h4>Tools & Technologies</h4>
-                      <ul>
-                          <li>Git, GitHub</li>
-                          <li>Full Stack Architecture</li>
-                          <li>CI/CD Pipeline</li>
-                          <li>Cloud Solutions</li>
-                      </ul>
-                  </div>
-              </div>
-          </div>
-
-          <div class="section">
-              <h2 class="section-title">WORK EXPERIENCE</h2>
-              <div class="experience-item">
-                  <div class="item-header">
-                      <div>
-                          <div class="item-title">Senior Full Stack Developer</div>
-                          <div class="item-company">Ghar Ko Coder</div>
-                      </div>
-                      <div style="text-align: right;">
-                          <div class="item-date">2025 - Present</div>
-                          <div class="item-location">Chaubiskoti Bharatpur</div>
-                      </div>
-                  </div>
-                  <p class="item-description">
-                      Lead development of scalable web applications serving 100K+ users. Mentor junior developers 
-                      and architect cloud-native solutions.
-                  </p>
-                  <div class="achievements">
-                      <h5>Key Achievements:</h5>
-                      <ul>
-                          <li>Reduced application load time by 40%</li>
-                          <li>Led team of 5 developers</li>
-                          <li>Implemented CI/CD pipeline</li>
-                          <li>Architected scalable solutions for 100K+ users</li>
-                      </ul>
-                  </div>
-              </div>
-          </div>
-
-          <div class="section">
-              <h2 class="section-title">EDUCATION</h2>
-              <div class="education-item">
-                  <div class="item-header">
-                      <div>
-                          <div class="item-title">Higher Education</div>
-                          <div class="item-company">Prerana College</div>
-                      </div>
-                      <div style="text-align: right;">
-                          <div class="item-date">2023 - 2025</div>
-                          <div class="item-location">GPA: Ongoing</div>
-                      </div>
-                  </div>
-                  <p class="item-description">Currently pursuing higher education with focus on technology and development</p>
-              </div>
-              
-              <div class="education-item">
-                  <div class="item-header">
-                      <div>
-                          <div class="item-title">Secondary Level Education</div>
-                          <div class="item-company">Kalika Model Secondary School</div>
-                      </div>
-                      <div style="text-align: right;">
-                          <div class="item-date">2021 - 2023</div>
-                          <div class="item-location">GPA: 3.65/4.0</div>
-                      </div>
-                  </div>
-                  <p class="item-description">Completed secondary education with strong academic performance</p>
-              </div>
-              
-              <div class="education-item">
-                  <div class="item-header">
-                      <div>
-                          <div class="item-title">Basic Level Education</div>
-                          <div class="item-company">Kalika Model Secondary School</div>
-                      </div>
-                      <div style="text-align: right;">
-                          <div class="item-date">2015 - 2020</div>
-                          <div class="item-location">GPA: 4.0/4.0</div>
-                      </div>
-                  </div>
-                  <p class="item-description">Completed basic education with perfect academic record</p>
-              </div>
-          </div>
-
-          <div class="section">
-              <h2 class="section-title">FEATURED PROJECTS</h2>
-              
-              <div class="project-item">
-                  <div class="item-title">E-Commerce Platform</div>
-                  <p class="item-description">A full-stack e-commerce solution with React, Node.js, and Stripe integration.</p>
-                  <div class="project-tech">
-                      <span class="tech-tag">React</span>
-                      <span class="tech-tag">Node.js</span>
-                      <span class="tech-tag">MongoDB</span>
-                      <span class="tech-tag">Stripe</span>
-                  </div>
-              </div>
-              
-              <div class="project-item">
-                  <div class="item-title">Task Management App</div>
-                  <p class="item-description">A collaborative task management tool with real-time updates and team features.</p>
-                  <div class="project-tech">
-                      <span class="tech-tag">Next.js</span>
-                      <span class="tech-tag">Socket.io</span>
-                      <span class="tech-tag">PostgreSQL</span>
-                      <span class="tech-tag">Tailwind</span>
-                  </div>
-              </div>
-              
-              <div class="project-item">
-                  <div class="item-title">AI Chat Assistant</div>
-                  <p class="item-description">Intelligent chat assistant powered by machine learning and natural language processing.</p>
-                  <div class="project-tech">
-                      <span class="tech-tag">Python</span>
-                      <span class="tech-tag">TensorFlow</span>
-                      <span class="tech-tag">Flask</span>
-                      <span class="tech-tag">React</span>
-                  </div>
-              </div>
-              
-              <div class="project-item">
-                  <div class="item-title">Arduino Projects</div>
-                  <p class="item-description">Various hardware projects including robot cars and wireless control systems.</p>
-                  <div class="project-tech">
-                      <span class="tech-tag">Arduino</span>
-                      <span class="tech-tag">C++</span>
-                      <span class="tech-tag">Electronics</span>
-                      <span class="tech-tag">IoT</span>
-                  </div>
-              </div>
-          </div>
-
-          <div class="section">
-              <h2 class="section-title">GOALS & ASPIRATIONS</h2>
-              <p class="about-text">
-                  Contributing meaningfully to Nepal's tech community through innovative solutions and continuous 
-                  learning in full stack development and UI/UX design. Passionate about creating technology that 
-                  makes a positive impact on people's lives.
-              </p>
-          </div>
-      </body>
-      </html>
-    `
-
-    cvWindow.document.write(cvHTML)
-    cvWindow.document.close()
+    // Create a link element and trigger download of the updated PDF
+    const link = document.createElement("a")
+    link.href = "/Ocean_Chalise_CV_Updated.pdf"
+    link.download = "Ocean_Chalise_CV.pdf"
+    link.target = "_blank"
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -524,9 +82,9 @@ export default function Portfolio() {
     setSubmitStatus(null)
 
     try {
-      // Use no-cors mode to avoid CORS issues with Google Apps Script
+      // Use your new Google Apps Script deployment ID
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbyPy20595zpA-s2MmJ2dUJJN9ku5vJZFouv9rZiaTRauxpJUyDFenK4i9CfOCeEue205A/exec",
+        "https://script.google.com/macros/s/AKfycbz1iPo1jFoZcKDoBX97Gk8AOt4LUqIrv3tr1a-u_Vd5/exec",
         {
           method: "POST",
           mode: "no-cors",
@@ -571,12 +129,12 @@ export default function Portfolio() {
     about:
       "Ocean Chalise is a passionate tech enthusiast from Nepal, aspiring full stack developer and beginner UI/UX designer. He enjoys creating complete digital experiences from designing intuitive user interfaces to building robust back-end systems.",
     skills:
-      "Ocean's technical skills include: HTML5, CSS3, JavaScript (ES6+), React.js, Next.js, Tailwind CSS, Node.js, Express.js, MongoDB, PostgreSQL, UI/UX Design Principles, Arduino Programming, and more.",
+      "Ocean's technical skills include: HTML5, CSS3, JavaScript (ES6+), React.js, Next.js, Tailwind CSS, Node.js, Express.js, MongoDB, PostgreSQL, UI/UX Design Principles, Arduino Programming, Excel, Google Sheets, Data Management, and more.",
     education:
-      "Ocean's education includes:\n\n🎓 **Higher Education** at Prerana College (2023 - 2025)\n🏫 **Secondary Level Education** at Kalika Model Secondary School (2021 - 2023)\n📚 **Basic Level Education** at Kalika Model Secondary School (2015 - 2020)",
+      "Ocean's education includes:\n\n🎓 **Higher Education** at Prerana College (2023 - 2025) - GPA: 3.4/4.0\n🏫 **Secondary Level Education** at Kalika Model Secondary School (2021 - 2023) - GPA: 3.65/4.0\n📚 **Basic Level Education** at Kalika Model Secondary School (2015 - 2020) - GPA: 4.0/4.0",
     projects:
-      "Ocean's featured projects include: E-Commerce Platform, Task Management App, Weather Dashboard, Social Media Analytics, Portfolio Website, and AI Chat Assistant.",
-    work: "Ocean's work experience:\n\n💼 **Senior Full Stack Developer** at Ghar Ko Coder\n📅 2025 - Present\n📍 Chaubiskoti Bharatpur\n\n✨ **Key Achievements:**\n• Reduced app load time by 40%\n• Led team of 5 developers\n• Implemented CI/CD pipeline\n• Serves 100K+ users",
+      "Ocean's featured projects include: E-Commerce Platform, Task Management App, Weather Dashboard, Social Media Analytics, Portfolio Website, AI Chat Assistant, and Arduino robot cars.",
+    work: "Ocean's work experience:\n\n💼 **Freelancer - Data Specialist** at Upwork\n📅 2023 - Present\n📍 Chaubiskoti Bharatpur\n\n✨ **Key Achievements:**\n• Completed 50+ data projects with 100% accuracy\n• Maintained 5-star rating on Upwork platform\n• Specialized in Excel, Google Sheets, and database management",
     contact: "You can contact Ocean at Chaliseocean756@gmail.com or +977 9748202958.",
   }
 
@@ -648,7 +206,7 @@ export default function Portfolio() {
                 <div>
                   <div className="w-80 h-80 mx-auto bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center p-2">
                     <img
-                      src="/images/ocean-profile.jpg"
+                      src="/images/ocean-new-profile.jpg"
                       alt="Ocean Chalise - Professional Photo"
                       className="w-72 h-72 rounded-full object-cover border-4 border-white shadow-lg"
                     />
@@ -698,8 +256,9 @@ export default function Portfolio() {
                     degree: "Higher Education",
                     school: "Prerana College",
                     year: "2023 - 2025",
-                    gpa: "Ongoing",
-                    description: "Currently pursuing higher education with focus on technology and development",
+                    gpa: "3.4/4.0",
+                    description:
+                      "Completed higher education with strong academic performance in technology and development",
                   },
                   {
                     degree: "Secondary Level Education",
@@ -859,16 +418,16 @@ export default function Portfolio() {
               <div className="space-y-8">
                 {[
                   {
-                    title: "Senior Full Stack Developer",
-                    company: "Ghar Ko Coder",
-                    period: "2025 - Present",
+                    title: "Freelancer - Data Specialist",
+                    company: "Upwork",
+                    period: "2023 - Present",
                     location: "Chaubiskoti Bharatpur",
                     description:
-                      "Lead development of scalable web applications serving 100K+ users. Mentor junior developers and architect cloud-native solutions.",
+                      "Specialized in data entry, data management, and data manipulation projects for various clients. Delivered accurate and efficient data solutions across multiple industries.",
                     achievements: [
-                      "Reduced application load time by 40%",
-                      "Led team of 5 developers",
-                      "Implemented CI/CD pipeline",
+                      "Completed 50+ data projects with 100% accuracy",
+                      "Maintained 5-star rating on Upwork platform",
+                      "Specialized in Excel, Google Sheets, and database management",
                     ],
                   },
                 ].map((work, index) => (
