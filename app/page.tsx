@@ -253,10 +253,18 @@ export default function Portfolio() {
               <div className="space-y-8">
                 {[
                   {
+                    degree: "Bachelors of Engineering in Information Technology",
+                    school: "Lumbini Engineering Management and Science College",
+                    year: "2025 - 2029",
+                    gpa: "Running",
+                    description:
+                      "Currently pursuing bachelors degree in Information Technology with focus on full-stack development and emerging technologies",
+                  },
+                  {
                     degree: "Higher Education",
                     school: "Prerana College",
                     year: "2023 - 2025",
-                    gpa: "3.4/4.0",
+                    gpa: "Passed",
                     description:
                       "Completed higher education with strong academic performance in technology and development",
                   },
@@ -264,15 +272,8 @@ export default function Portfolio() {
                     degree: "Secondary Level Education",
                     school: "Kalika Model Secondary School",
                     year: "2021 - 2023",
-                    gpa: "3.65/4.0",
+                    gpa: "Passed",
                     description: "Completed secondary education with strong academic performance",
-                  },
-                  {
-                    degree: "Basic Level Education",
-                    school: "Kalika Model Secondary School",
-                    year: "2015 - 2020",
-                    gpa: "4.0/4.0",
-                    description: "Completed basic education with perfect academic record",
                   },
                 ].map((edu, index) => (
                   <Card key={index} className="relative">
@@ -292,9 +293,11 @@ export default function Portfolio() {
                         <div className="text-right">
                           <div className="flex items-center text-gray-500 dark:text-gray-400 mb-1">
                             <Calendar className="h-4 w-4 mr-1" />
-                            {edu.year}
+                            <span className="bg-gradient-to-r from-amber-700 to-green-700 bg-clip-text text-transparent font-semibold">
+                              {edu.year}
+                            </span>
                           </div>
-                          <div className="font-semibold text-green-600 dark:text-green-400">GPA: {edu.gpa}</div>
+                          <div className="font-semibold text-green-600 dark:text-green-400">{edu.gpa}</div>
                         </div>
                       </div>
                     </CardHeader>
@@ -421,7 +424,7 @@ export default function Portfolio() {
                     title: "Freelancer - Data Specialist",
                     company: "Upwork",
                     period: "2023 - Present",
-                    location: "Chaubiskoti Bharatpur",
+                    location: "Upwork", // Changed location from "Chaubiskoti Bharatpur" to "Upwork"
                     description:
                       "Specialized in data entry, data management, and data manipulation projects for various clients. Delivered accurate and efficient data solutions across multiple industries.",
                     achievements: [
@@ -506,7 +509,7 @@ export default function Portfolio() {
                         { icon: Github, href: "https://github.com/chaliseocean", label: "GitHub" },
                         {
                           icon: Linkedin,
-                          href: "https://www.linkedin.com/in/ocean-chalise-045a1a303/",
+                          href: "https://www.linkedin.com/in/chaliseocean/", // Updated LinkedIn URL to new profile
                           label: "LinkedIn",
                         },
                         { icon: Youtube, href: "https://www.youtube.com/@40A_ocean", label: "YouTube" },
@@ -637,7 +640,7 @@ export default function Portfolio() {
                   <div className="flex space-x-4">
                     {[
                       { icon: Github, href: "https://github.com/chaliseocean" },
-                      { icon: Linkedin, href: "https://www.linkedin.com/in/ocean-chalise-045a1a303/" },
+                      { icon: Linkedin, href: "https://www.linkedin.com/in/chaliseocean/" }, // Updated LinkedIn URL to new profile
                       { icon: Youtube, href: "https://www.youtube.com/@40A_ocean" },
                     ].map((social, index) => (
                       <a
