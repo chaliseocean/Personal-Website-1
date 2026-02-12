@@ -43,26 +43,11 @@ export default function MaintenancePage() {
                     0% { transform: rotate(0deg); }
                     100% { transform: rotate(-360deg); }
                   }
-                  @keyframes holdWrench {
-                    0%, 100% { transform: rotate(-30deg); }
-                    50% { transform: rotate(-45deg); }
-                  }
-                  @keyframes bobWorker {
-                    0%, 100% { transform: translateY(0); }
-                    50% { transform: translateY(-8px); }
-                  }
                   .spin-gear {
                     animation: spinGear 4s linear infinite;
                   }
                   .spin-gear-reverse {
                     animation: spinGearReverse 3s linear infinite;
-                  }
-                  .hold-wrench {
-                    animation: holdWrench 1.5s ease-in-out infinite;
-                    transform-origin: center;
-                  }
-                  .bob-worker {
-                    animation: bobWorker 2s ease-in-out infinite;
                   }
                 `}</style>
                 <div className="relative w-96 h-64">
@@ -153,32 +138,7 @@ export default function MaintenancePage() {
                     </div>
                   </div>
 
-                  {/* Worker Figure */}
-                  <div className="absolute left-8 bottom-12 bob-worker">
-                    {/* Hard Hat */}
-                    <div className="w-10 h-6 bg-orange-500 rounded-t-3xl mx-auto border-2 border-orange-600 relative">
-                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-6 h-1 bg-orange-600 rounded" />
-                    </div>
-                    {/* Head */}
-                    <div className="w-8 h-8 bg-orange-200 rounded-full mx-auto border border-orange-300" />
-                    {/* Body */}
-                    <div className="w-6 h-8 bg-blue-600 mx-auto border border-blue-700" />
-                    {/* Left Arm */}
-                    <div className="absolute top-10 left-0 w-1.5 h-6 bg-orange-200 origin-top" style={{ transform: 'rotate(-25deg)' }} />
-                    {/* Right Arm (Wrench) */}
-                    <div className="absolute top-10 -right-2 hold-wrench">
-                      <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="fill-gray-600">
-                        <rect x="4" y="8" width="4" height="12" rx="2" />
-                        <circle cx="18" cy="10" r="3" />
-                        <path d="M 8 8 L 16 6" stroke="#4b5563" strokeWidth="2" fill="none" />
-                      </svg>
-                    </div>
-                    {/* Legs */}
-                    <div className="flex gap-1 mt-1 justify-center">
-                      <div className="w-1.5 h-4 bg-gray-800" />
-                      <div className="w-1.5 h-4 bg-gray-800" />
-                    </div>
-                  </div>
+
                 </div>
               </div>
 
