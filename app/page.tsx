@@ -32,28 +32,152 @@ export default function MaintenancePage() {
         <div className="flex-1 flex items-center justify-center pt-20 pb-40">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-2xl mx-auto">
-              {/* Building Animation */}
+              {/* Maintenance Worker Animation */}
               <div className="mb-12 flex justify-center">
-                <div className="relative w-24 h-32">
-                  {/* Building Structure */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    {/* Building Body */}
-                    <div className="w-20 h-24 bg-gradient-to-b from-blue-400 to-blue-600 rounded-lg shadow-lg relative">
-                      {/* Windows */}
-                      <div className="grid grid-cols-2 gap-2 p-3">
-                        {[...Array(6)].map((_, i) => (
-                          <div
+                <style>{`
+                  @keyframes spinGear {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                  }
+                  @keyframes spinGearReverse {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(-360deg); }
+                  }
+                  @keyframes holdWrench {
+                    0%, 100% { transform: rotate(-30deg); }
+                    50% { transform: rotate(-45deg); }
+                  }
+                  @keyframes bobWorker {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-8px); }
+                  }
+                  .spin-gear {
+                    animation: spinGear 4s linear infinite;
+                  }
+                  .spin-gear-reverse {
+                    animation: spinGearReverse 3s linear infinite;
+                  }
+                  .hold-wrench {
+                    animation: holdWrench 1.5s ease-in-out infinite;
+                    transform-origin: center;
+                  }
+                  .bob-worker {
+                    animation: bobWorker 2s ease-in-out infinite;
+                  }
+                `}</style>
+                <div className="relative w-96 h-64">
+                  {/* Background */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-lg" />
+
+                  {/* Warning Stripes Bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 h-8">
+                    <div className="flex h-full">
+                      {[...Array(12)].map((_, i) => (
+                        <div
+                          key={i}
+                          className={`flex-1 h-full ${i % 2 === 0 ? 'bg-yellow-400' : 'bg-black'}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Left Gear (Large) */}
+                  <div className="absolute left-4 top-8 spin-gear">
+                    <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="32" cy="32" r="20" fill="#9ca3af" stroke="#6b7280" strokeWidth="2" />
+                      {[...Array(8)].map((_, i) => {
+                        const angle = (i * 360) / 8
+                        const rad = (angle * Math.PI) / 180
+                        const x = 32 + Math.cos(rad) * 24
+                        const y = 32 + Math.sin(rad) * 24
+                        return (
+                          <rect
                             key={i}
-                            className="w-3 h-3 bg-yellow-300 rounded-sm animate-pulse"
-                            style={{ animationDelay: `${i * 0.1}s` }}
+                            x={x - 3}
+                            y={y - 6}
+                            width="6"
+                            height="12"
+                            fill="#9ca3af"
+                            stroke="#6b7280"
+                            strokeWidth="1"
                           />
-                        ))}
+                        )
+                      })}
+                      <circle cx="32" cy="32" r="8" fill="#6b7280" />
+                    </svg>
+                  </div>
+
+                  {/* Right Gear (Medium) */}
+                  <div className="absolute right-6 top-12 spin-gear-reverse">
+                    <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="24" cy="24" r="15" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2" />
+                      {[...Array(6)].map((_, i) => {
+                        const angle = (i * 360) / 6
+                        const rad = (angle * Math.PI) / 180
+                        const x = 24 + Math.cos(rad) * 18
+                        const y = 24 + Math.sin(rad) * 18
+                        return (
+                          <rect
+                            key={i}
+                            x={x - 2.5}
+                            y={y - 5}
+                            width="5"
+                            height="10"
+                            fill="#d1d5db"
+                            stroke="#9ca3af"
+                            strokeWidth="1"
+                          />
+                        )
+                      })}
+                      <circle cx="24" cy="24" r="6" fill="#9ca3af" />
+                    </svg>
+                  </div>
+
+                  {/* Computer/Window */}
+                  <div className="absolute left-1/2 top-16 -translate-x-1/2">
+                    {/* Monitor Body */}
+                    <div className="w-48 bg-gradient-to-b from-purple-500 to-purple-600 rounded-lg shadow-lg overflow-hidden">
+                      {/* Monitor Top */}
+                      <div className="flex justify-center gap-2 p-2 bg-purple-700">
+                        <div className="w-3 h-3 rounded-full bg-red-500" />
+                        <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                        <div className="w-3 h-3 rounded-full bg-green-500" />
+                      </div>
+                      {/* Screen */}
+                      <div className="bg-purple-400 p-4 h-24 flex items-center justify-center border-4 border-yellow-400">
+                        <div className="text-center">
+                          <div className="text-yellow-300 font-bold text-sm">UNDER</div>
+                          <div className="text-yellow-300 font-bold text-lg">MAINTENANCE</div>
+                        </div>
                       </div>
                     </div>
-                    {/* Crane */}
-                    <div className="absolute -top-6 right-0 w-12 h-8 border-4 border-orange-500 rounded-full animate-spin" style={{ animationDuration: "3s" }} />
-                    {/* Crane Hook */}
-                    <div className="absolute -top-8 right-2 w-1 h-4 bg-orange-500 animate-bounce" style={{ animationDelay: "0s" }} />
+                  </div>
+
+                  {/* Worker Figure */}
+                  <div className="absolute left-8 bottom-12 bob-worker">
+                    {/* Hard Hat */}
+                    <div className="w-10 h-6 bg-orange-500 rounded-t-3xl mx-auto border-2 border-orange-600 relative">
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-6 h-1 bg-orange-600 rounded" />
+                    </div>
+                    {/* Head */}
+                    <div className="w-8 h-8 bg-orange-200 rounded-full mx-auto border border-orange-300" />
+                    {/* Body */}
+                    <div className="w-6 h-8 bg-blue-600 mx-auto border border-blue-700" />
+                    {/* Left Arm */}
+                    <div className="absolute top-10 left-0 w-1.5 h-6 bg-orange-200 origin-top" style={{ transform: 'rotate(-25deg)' }} />
+                    {/* Right Arm (Wrench) */}
+                    <div className="absolute top-10 -right-2 hold-wrench">
+                      <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="fill-gray-600">
+                        <rect x="4" y="8" width="4" height="12" rx="2" />
+                        <circle cx="18" cy="10" r="3" />
+                        <path d="M 8 8 L 16 6" stroke="#4b5563" strokeWidth="2" fill="none" />
+                      </svg>
+                    </div>
+                    {/* Legs */}
+                    <div className="flex gap-1 mt-1 justify-center">
+                      <div className="w-1.5 h-4 bg-gray-800" />
+                      <div className="w-1.5 h-4 bg-gray-800" />
+                    </div>
                   </div>
                 </div>
               </div>
